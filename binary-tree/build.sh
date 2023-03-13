@@ -1,5 +1,5 @@
-#!/bin/zsh
+#!/bin/bash
 
 set -xe
 
-gcc -Wall -o main bin-tree.c
+gcc -Wall -fsanitize=address -o main bin-tree.c
