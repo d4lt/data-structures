@@ -5,95 +5,52 @@
 
 #define MAX_CAP 1023
 
+typedef int bt_type; 
+
 typedef struct Node Node;
 
 struct Node {
-    int data;
+    bt_type data;
     Node* left;
     Node* right;
 };
 
-typedef struct{ 
-    Node* root;
-    uint32_t counter;
-} Binary_tree;
 
-Binary_tree* new_Bt(){
-//    Binary_tree* new_bt = malloc(sizeof(Binary_tree));
-    Binary_tree new_bt;
+void pre_order(Node* root) {
+    if (root == NULL) return;
+    printf("%d ", root->data);
+    pre_order( root->left );
+    pre_order( root->right );
+} 
 
-    new_bt.counter = 0;
-    new_bt.root = NULL;
-    
-    Binary_tree* bt_ptr = &new_bt;
-    return bt_ptr;
+void in_order(Node* root) {
+    if( root == NULL ) return;
+    in_order(root->left);
+    printf("%d ", root->data);
+    in_order(root->right);
 }
 
-Node* create_node(int data){
-    Node* node = (Node*)malloc(sizeof(Node));
+void insert_left(Node* root, bt_type new_data) {
+    if( root == NULL ) return;
 
-    node->data = data;
-    node->left = NULL;
-    node->right = NULL;
-
-    return node;
-}
-
-int push_Bt(int value, Binary_tree *bt){
-    if (bt->counter < MAX_CAP){
-        perror("full capacity reached");
-        return 0;
+    if ( root->left == NULL ){
+        Node new_node = { new_data, NULL, NULL };
+        root->left = &new_node; 
+    } 
+    else if ( root->right == NULL) {
+        Node new_node = { new_data, NULL, NULL };
+        root->right = &new_node;
     }
 
-    Node * QUERY_POOL[MAX_CAP];
-    size_t tail;
-    size_t current;
-
-    Node * new_node = create_node(value); 
-
-    bt->counter++;
-
-    if (bt->counter == 1){
-        
-        bt->root = new_node;
-        return 1;
-    }
-
-    QUERY_POOL[0] = bt->root;
-    current = 0;
-    tail = 0;
-
-    Node *temp; 
-    while(1){
-        temp = QUERY_POOL[current];
-
-        if (temp->left == NULL){
-            temp->left = new_node;
-            return 1;
-        } else {
-            ++tail;
-            QUERY_POOL[tail] = temp->left;
-        }
-
-
-        if (temp->right == NULL){
-            temp->right = new_node;
-            return 1;
-        } else {
-            ++tail;
-            QUERY_POOL[tail] = temp->right;
-        }
-        
-        ++current;
-    }
-    
 }
 
 int main(void){
+
+    Node left_node = {69, NULL, NULL}; 
+    Node right_node = {1, NULL, NULL}; 
     
-    Binary_tree* bt = new_Bt();
+    Node root = {420, &left_node, &right_node};
     
-    push_Bt(3, bt);
-    printf("\nroot; %d\n", (bt->root)->data);
+    in_order(&root);
     return 0;
 }

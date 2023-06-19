@@ -2,4 +2,4 @@
 
 set -xe
 
-gcc -Wall -fsanitize=address -o main bin-tree.c
+gcc -Wall -pedantic -fsanitize=address -o main bin-tree.c
